@@ -1,6 +1,11 @@
 
 const { hashPassword } = require("./middleware");
 const userSchema = require("./userModel");
+const {userError} = require("./middleware")
+
+const jwt = require("jsonwebtoken")
+
+const JWT_SECRET = "Pavan#9963"
 
 const createUser = async(req, res) =>{
 
@@ -24,4 +29,16 @@ const createUser = async(req, res) =>{
 
 }
 
-module.exports = createUser;
+const loginUser = async(req,res)=>{
+    const {payload} = req;
+    try{
+    
+    const token = await jwt.sign(payload , JWT_SECRET);
+    res.status(200).json({token});
+
+    }catch(err){
+        res.status(400).send("Invalid Login");
+    }
+}
+
+module.exports = {createUser,loginUser};

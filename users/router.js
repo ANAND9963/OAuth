@@ -1,16 +1,17 @@
 const { validate } = require("./userModel");
 
-const {validateUserName, validatePassword ,hashPassword} = require ("./middleware")
+const {validateSigninName, validatePassword ,hashPassword, validateSignin, Authentication } = require ("./middleware")
 
-const createUser = require("./userController")
+const {createUser, loginUser} = require("./userController")
 
 
 const userRoutes =(server) => {
 
-    server.get("/api/", (req,res)=>{
-        res.send("connected to API");
-    })
-    server.post("/api/signup",validateUserName, validatePassword ,hashPassword,createUser);
+    server.get("/api/", Authentication,  (req, res)=>{
+        res.status(200).send("You have access")
+    });
+    server.post("/api/signup",validateSigninName, validatePassword ,hashPassword,createUser);
+    server.post("/api/signin" , validateSignin,loginUser)
 }
 
 module.exports = userRoutes;
