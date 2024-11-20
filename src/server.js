@@ -1,17 +1,24 @@
 const bodyparser = require("body-parser");
+require('dotenv').config();
 
 const express = require("express");
 
 const server = express();
 
+const cors = require("cors");
+
+server.use(cors());
 const mongoose = require("mongoose");
 
 server.use(bodyparser.json());
 
-const PORT = 5000 || process.env.PORT
+const PORT = process.env.PORT || 5000
 
 mongoose.Promise = global.Promise;
-const uri = "mongodb://127.0.0.1:27017/users";
+
+
+const uri = `${process.env.REACT_APP_MOVIE_DB_URL}`;
+
 
 
 const mongodb = mongoose.connect(uri).then(()=>{
